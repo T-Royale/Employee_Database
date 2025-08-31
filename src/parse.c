@@ -77,6 +77,10 @@ int validate_db_header(int fd, struct dbheader_t **headerOut) {
 }
 
 int create_db_header(struct dbheader_t **headerOut) {
+    if(headerOut == NULL){
+        printf("Tried to create db of a NULL pointer");
+        return STATUS_ERROR;
+    }
 	struct dbheader_t *header = calloc(1, sizeof(struct dbheader_t));
     if(!header){
         printf("malloc failed to create db header\n");
