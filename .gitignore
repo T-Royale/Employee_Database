@@ -56,3 +56,8 @@ dkms.conf
 
 # VSCodium config files
 .vscode/
+
+# Project binary, objects and database file
+bin/
+obj/
+*.db
