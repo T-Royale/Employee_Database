@@ -4,5 +4,18 @@
 #define STATUS_ERROR   -1
 #define STATUS_SUCCESS 0
 
+#include <stdio.h>
+#include <stdbool.h>
+#include <getopt.h>
+#include <stdlib.h>
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <string.h>
+#include <fcntl.h>
+
+#include "file.h"
+#include "parse.h"
 
 #endif

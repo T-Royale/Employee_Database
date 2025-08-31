@@ -1,14 +1,4 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <string.h>
-
 #include "common.h"
-#include "parse.h"
 
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 
