@@ -4,6 +4,8 @@
 #define STATUS_ERROR   -1
 #define STATUS_SUCCESS 0
 
+#define CURRENT_VERSION 0x01
+
 #include <stdio.h>
 #include <stdbool.h>
 #include <getopt.h>
