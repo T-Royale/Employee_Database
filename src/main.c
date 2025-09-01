@@ -69,11 +69,9 @@ int main(int argc, char *argv[]) {
 
     if(addString){
         if(header->count >= 1){
-            header->count++;
             employees = realloc(employees, header->count * sizeof(struct employee_t));
         }
         else{
-            header->count = 1;
             employees = calloc(1, sizeof(struct employee_t));
         }
         if(!employees) return -1;
