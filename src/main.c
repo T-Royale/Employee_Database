@@ -3,24 +3,31 @@
 void print_usage(char *argv[]) {
     printf("Usage: %s -n -f <path to db>\n", argv[0]);
     printf("\t -n - create new database file\n");
+    printf("\t -a "name,addr,hours" - add employee\n");
     printf("\t -f - (required) path to database file\n");
 }
 
 int main(int argc, char *argv[]) { 
 	bool newFile = false;
     char* filePath = NULL;
+    char* addString = NULL;
 
     int dbfd = -1;
     struct dbheader_t* header = NULL;
 
+    struct employee_t* employees = NULL;
+
     char c;
-    while((c = getopt(argc, argv, "nf:")) != -1){
+    while((c = getopt(argc, argv, "nf:a:")) != -1){
         switch(c){
             case 'n':
                 newFile = true;
                 break;
             case 'f':
                 filePath = optarg;
+                break;
+            case 'a':
+                addString = optarg;
                 break;
             case '?':
                 printf("unknown option -%c\n", c);
@@ -55,7 +62,24 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    output_file(dbfd, header, NULL);
+    if(read_employees(dbfd, header, &employees) != STATUS_SUCCESS){
+        printf("failed to read employees\n");
+        return 0;
+    }
+
+    if(addString){
+        if(header->count >= 1){
+            header->count++;
+            employees = realloc(employees, header->count * sizeof(struct employee_t));
+        }
+        else{
+            header->count = 1;
+            employees = calloc(1, sizeof(struct employee_t));
+        }
+        add_employee(header, employees, addString);
+    }
+
+    output_file(dbfd, header, employees);
 
     return 0;
 }
