@@ -6,13 +6,24 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 */
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
-    printf("%s\n", addstring);
+	printf("%s\n", addstring);
 
-    sscanf(addstring, "%256[^,],%256[^,],%d", employees[dbhdr->count-1].name, employees[dbhdr->count-1].address, &employees[dbhdr->count-1].hours);
+	char *name = strtok(addstring, ",");
 
-    printf("%s %s %d\n", employees[dbhdr->count-1].name, employees[dbhdr->count-1].address, employees[dbhdr->count-1].hours);
+	char *addr = strtok(NULL, ",");
 
-    return STATUS_SUCCESS;
+	char *hours = strtok(NULL, ",");
+
+	printf("%s %s %s\n", name, addr, hours);
+
+	
+	strncpy(employees[dbhdr->count-1].name, name, sizeof(employees[dbhdr->count-1].name));
+	strncpy(employees[dbhdr->count-1].address, addr, sizeof(employees[dbhdr->count-1].address));
+
+	employees[dbhdr->count-1].hours = atoi(hours);
+	
+
+	return STATUS_SUCCESS;
 }
 
 int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employeesOut) {
