@@ -3,7 +3,7 @@
 void print_usage(char *argv[]) {
     printf("Usage: %s -n -f <path to db>\n", argv[0]);
     printf("\t -n - create new database file\n");
-    printf("\t -a "name,addr,hours" - add employee\n");
+    printf("\t -a \"name,addr,hours\" - add employee\n");
     printf("\t -f - (required) path to database file\n");
 }
 
