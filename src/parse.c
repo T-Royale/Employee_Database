@@ -6,17 +6,13 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 */
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
-	printf("%s\n", addstring);
-
-	char *name = strtok(addstring, ",");
-
-	char *addr = strtok(NULL, ",");
-
-	char *hours = strtok(NULL, ",");
-
-	printf("%s %s %s\n", name, addr, hours);
-
+    if(dbhdr->count <= 0) return STATUS_ERROR;
 	
+    char *name = strtok(addstring, ",");
+	char *addr = strtok(NULL, ",");
+	char *hours = strtok(NULL, ",");
+    if(!name || !addr || !hours) return STATUS_ERROR;
+
 	strncpy(employees[dbhdr->count-1].name, name, sizeof(employees[dbhdr->count-1].name));
 	strncpy(employees[dbhdr->count-1].address, addr, sizeof(employees[dbhdr->count-1].address));
 
