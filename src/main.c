@@ -76,6 +76,7 @@ int main(int argc, char *argv[]) {
             header->count = 1;
             employees = calloc(1, sizeof(struct employee_t));
         }
+        if(!employees) return -1;
         add_employee(header, employees, addString);
     }
 
