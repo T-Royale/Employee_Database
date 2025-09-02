@@ -1,9 +1,13 @@
 #include "common.h"
-/*
+
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
-    
+    for(int i = 0; i < dbhdr->count; i++){
+		printf("Employee %d\n", i);
+		printf("\tName: %s\n", employees[i].name);
+		printf("\tAddress: %s\n", employees[i].address);
+		printf("\tHours: %d\n", employees[i].hours);
+	}
 }
-*/
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
     if(!dbhdr || !employees || !addstring)
