@@ -6,7 +6,15 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 */
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
+    if(dbhdr->count >= 1){
+        employees = realloc(employees, (dbhdr->count + 1) * sizeof(struct employee_t));
+    }
+    else{
+        employees = calloc(1, sizeof(struct employee_t));
+    }
+    
     if (!dbhdr || !employees || !addstring) return STATUS_ERROR;
+    
     if(dbhdr->count == SHRT_MAX) return STATUS_ERROR;
     char name[256] = {0};
 	char addr[256] = {0};
