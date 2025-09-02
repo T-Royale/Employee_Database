@@ -6,20 +6,22 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 */
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
+    if (!dbhdr || !employees || !addstring) return STATUS_ERROR;
+    if(dbhdr->count == SHRT_MAX) return STATUS_ERROR;
     char name[256] = {0};
 	char addr[256] = {0};
     int hours = 0;
 
-    int parsed = sscanf(addstring, " %255[^,],%255[^,],%d", name, addr, &hours);
+    int parsed = sscanf(addstring, "%255[^,],%255[^,],%d", name, addr, &hours);
     if (parsed != 3) return STATUS_ERROR;
 
     size_t idx = dbhdr->count;
 
-    strncpy(employees[idx].name, name, sizeof employees[idx].name - 1);
-    employees[idx].name[sizeof employees[idx].name - 1] = '\0';
+    strncpy(employees[idx].name, name, sizeof(employees[idx].name - 1));
+    employees[idx].name[sizeof(employees[idx].name - 1)] = '\0';
 
-    strncpy(employees[idx].address, addr, sizeof employees[idx].address - 1);
-    employees[idx].address[sizeof employees[idx].address - 1] = '\0';
+    strncpy(employees[idx].address, addr, sizeof(employees[idx].address - 1));
+    employees[idx].address[sizeof(employees[idx].address - 1)] = '\0';
 
     employees[idx].hours = hours;
 
