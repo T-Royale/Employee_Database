@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     }
 
     if(addString){
-        if(add_employee(header, employees, addString) == STATUS_ERROR){
+        if(add_employee(header, &employees, addString) == STATUS_ERROR){
             printf("Failed to add employee\n");
             return -1;
         }

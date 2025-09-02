@@ -5,37 +5,33 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 }
 */
 
-int add_employee(struct dbheader_t *dbhdr, struct employee_t *employees, char *addstring) {
-    if(dbhdr->count >= 1){
-        employees = realloc(employees, (dbhdr->count + 1) * sizeof(struct employee_t));
-    }
-    else{
-        employees = calloc(1, sizeof(struct employee_t));
-    }
-    
-    if (!dbhdr || !employees || !addstring) return STATUS_ERROR;
-    
-    if(dbhdr->count == SHRT_MAX) return STATUS_ERROR;
-    char name[256] = {0};
-	char addr[256] = {0};
+int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
+    if(!dbhdr || !(*employees) || !addstring);
+    int count = dbhdr->count + 1;
+
+    struct employee_t *tmp = (count > 1) 
+        ? realloc(*employees, count * sizeof(struct employee_t))
+        : calloc(1, sizeof(struct employee_t));
+    if(!tmp) return STATUS_ERROR;
+    *employees = tmp;
+
+    char name[256] = {0}, addr[256] = {0};
     int hours = 0;
+    if (sscanf(addstring, "%255[^,],%255[^,],%d", name, addr, &hours) != 3)
+        return STATUS_ERROR;
 
-    int parsed = sscanf(addstring, "%255[^,],%255[^,],%d", name, addr, &hours);
-    if (parsed != 3) return STATUS_ERROR;
+    memset(&(*employees)[dbhdr->count], 0, sizeof(**employees));
 
-    size_t idx = dbhdr->count;
+    strncpy((*employees)[dbhdr->count].name, name, sizeof((*employees)[dbhdr->count].name) - 1);
+    (*employees)[dbhdr->count].name[sizeof((*employees)[dbhdr->count].name) - 1] = '\0';
 
-    strncpy(employees[idx].name, name, sizeof(employees[idx].name - 1));
-    employees[idx].name[sizeof(employees[idx].name - 1)] = '\0';
+    strncpy((*employees)[dbhdr->count].address, addr, sizeof((*employees)[dbhdr->count].address) - 1);
+    (*employees)[dbhdr->count].address[sizeof((*employees)[dbhdr->count].address) - 1] = '\0';
 
-    strncpy(employees[idx].address, addr, sizeof(employees[idx].address - 1));
-    employees[idx].address[sizeof(employees[idx].address - 1)] = '\0';
+    (*employees)[dbhdr->count].hours = hours;
 
-    employees[idx].hours = hours;
-
-    dbhdr->count = idx + 1;
-
-	return STATUS_SUCCESS;
+    dbhdr->count = count;
+    return STATUS_SUCCESS;
 }
 
 int read_employees(int fd, struct dbheader_t *dbhdr, struct employee_t **employeesOut) {
