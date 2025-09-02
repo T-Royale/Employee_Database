@@ -1,6 +1,7 @@
 #include "common.h"
 
 void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
+	if(!dbhdr || !employees) return STATUS_ERROR;
     for(int i = 0; i < dbhdr->count; i++){
 		printf("Employee %d\n", i);
 		printf("\tName: %s\n", employees[i].name);
