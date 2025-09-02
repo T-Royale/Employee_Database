@@ -6,20 +6,22 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 */
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {
-    if(!dbhdr || !(*employees) || !addstring);
-    int count = dbhdr->count + 1;
+    if(!dbhdr || !employees || !addstring)
+        return STATUS_ERROR;
 
-    struct employee_t *tmp = (count > 1) 
-        ? realloc(*employees, count * sizeof(struct employee_t))
-        : calloc(1, sizeof(struct employee_t));
-    if(!tmp) return STATUS_ERROR;
-    *employees = tmp;
+    int count = dbhdr->count + 1;
 
     char name[256] = {0}, addr[256] = {0};
     int hours = 0;
     if (sscanf(addstring, "%255[^,],%255[^,],%d", name, addr, &hours) != 3)
         return STATUS_ERROR;
 
+    struct employee_t *tmp = (count > 1) 
+        ? realloc(*employees, count * sizeof(struct employee_t))
+        : calloc(1, sizeof(struct employee_t));
+    if(!tmp) return STATUS_ERROR;
+    *employees = tmp;
+    
     memset(&(*employees)[dbhdr->count], 0, sizeof(**employees));
 
     strncpy((*employees)[dbhdr->count].name, name, sizeof((*employees)[dbhdr->count].name) - 1);
