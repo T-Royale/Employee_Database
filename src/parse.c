@@ -1,6 +1,28 @@
 #include "common.h"
 
-void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
+int delete_employee(short *count, struct employee_t *employees, int delete_id, int fd){
+    if(delete_id >= *count || delete_id < 0) {
+        return STATUS_ERROR;
+    }
+
+    long total_size = (long)sizeof(struct dbheader_t) +
+                   (long)*count * (long)sizeof(struct employee_t);
+
+    if (lseek(fd, 0, SEEK_SET) == (off_t)-1) { perror("lseek"); return STATUS_ERROR; }
+    if (ftruncate(fd, total_size) == -1) { perror("ftruncate"); return STATUS_ERROR; }
+
+    int tail = *count - delete_id - 1;
+
+    if(tail > 0){
+        memmove(&employees[delete_id], &employees[delete_id+1], (size_t)tail * sizeof(employees[0]));
+    }
+
+    (*count)--;
+
+    return STATUS_SUCCESS;
+}
+
+int list_employees(struct dbheader_t *dbhdr, struct employee_t* employees) {
 	if(!dbhdr || !employees) return STATUS_ERROR;
     for(int i = 0; i < dbhdr->count; i++){
 		printf("Employee %d\n", i);
@@ -8,6 +30,7 @@ void list_employees(struct dbheader_t *dbhdr, struct employee_t *employees) {
 		printf("\tAddress: %s\n", employees[i].address);
 		printf("\tHours: %d\n", employees[i].hours);
 	}
+    return STATUS_SUCCESS;
 }
 
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring) {

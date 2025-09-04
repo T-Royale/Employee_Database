@@ -18,7 +18,6 @@ int create_db_file(char *filename) {
 int open_db_file(char *filename) {
     int fd;
     if((fd = open(filename, O_RDWR)) == -1){
-        close(fd);
         perror("open");
         return STATUS_ERROR;
     }
