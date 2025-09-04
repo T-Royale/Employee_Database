@@ -1,5 +1,20 @@
 #include "common.h"
 
+int update_employee(char* str, struct employee_t *employees, int exclude){
+    int id, hours;
+
+    sscanf(str, "%d,%d\n", &id, &hours);
+
+    if(id == exclude){
+        printf("Cannot update the employee you just deleted\n");
+        return STATUS_ERROR;
+    }
+
+    employees[id].hours = hours;
+
+    return STATUS_SUCCESS;
+}
+
 int delete_employee(short *count, struct employee_t *employees, int delete_id, int fd){
     if(delete_id >= *count || delete_id < 0) {
         return STATUS_ERROR;

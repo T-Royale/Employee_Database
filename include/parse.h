@@ -23,5 +23,6 @@ int read_employees(int fd, struct dbheader_t *, struct employee_t **employeesOut
 int add_employee(struct dbheader_t *dbhdr, struct employee_t **employees, char *addstring);
 int list_employees(struct dbheader_t *dbhdr, struct employee_t *employees);
 int delete_employee(short *count, struct employee_t *employees, int delete_id, int fd);
+int update_employee(char* str, struct employee_t *employees, int exclude);
 
 #endif

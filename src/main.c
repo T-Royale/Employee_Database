@@ -2,9 +2,11 @@
 
 void print_usage(char *argv[]) {
     printf("Usage: %s -n -f <path to db>\n", argv[0]);
+    printf("\t -f - (required) path to database file\n");
     printf("\t -n - create new database file\n");
     printf("\t -a \"name,addr,hours\" - add employee\n");
-    printf("\t -f - (required) path to database file\n");
+    printf("\t -d <id> - delete employee by id\n");
+    printf("\t -u \"id,hours\"- update employee hours by it's id\n");
 }
 
 int main(int argc, char *argv[]) { 
@@ -12,7 +14,8 @@ int main(int argc, char *argv[]) {
     char* filePath = NULL;
     char* addString = NULL;
     bool list = false;
-    int delete = false;
+    int delete = -1;
+    char* update = NULL;
 
     int dbfd = -1;
     struct dbheader_t* header = NULL;
@@ -20,7 +23,7 @@ int main(int argc, char *argv[]) {
     struct employee_t* employees = NULL;
 
     char c;
-    while((c = getopt(argc, argv, "nf:a:ld:")) != -1){
+    while((c = getopt(argc, argv, "nf:a:ld:u:h")) != -1){
         switch(c){
             case 'n':
                 newFile = true;
@@ -37,9 +40,16 @@ int main(int argc, char *argv[]) {
             case 'd':
                 delete = atoi(optarg);
                 break;
+            case 'u':
+                update = optarg;
+                break;
+            case 'h':
+                print_usage(argv);
+                return 0;
             case '?':
             default:
-                printf("unknown option -%c\n", c);
+                printf("unknown option\n");
+                break;
         }
     }
 
@@ -83,9 +93,15 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if(delete){
+    if(delete != -1){
         if (delete_employee(&header->count, employees, delete, dbfd) == STATUS_ERROR){
             printf("failed to delete employee nº%d\n", delete);
+        }
+    }
+
+    if(update){
+        if(update_employee(update, employees, delete) == STATUS_ERROR){
+            printf("Failed to update employee\n");
         }
     }
 
